@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+                           http://www.springframework.org/schema/context 
+                           http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                           http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<mvc:annotation-driven />
+	<mvc:resources mapping="/*/.css" location="/" />
+	<mvc:resources mapping="/*/.jpg" location="/" />
+	<mvc:resources mapping="/*/.js" location="/" />
+	<mvc:resources mapping="/*/.png" location="/" />
+
+
+	<context:component-scan
+		base-package="com.xworkz.assetmanagement">
+	</context:component-scan>
+
+	<context:property-placeholder
+		location="classpath:config.properties" />
+
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+		id="viewResolver">
+		<property value="/view/" name="prefix" />
+		<property value=".jsp" name="suffix" />
+	</bean>
+
+	<context:property-placeholder
+		location="classpath:config.properties" />
+
+
+	<bean id="datasource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="url" value="${datasource.url}"></property>
+		<property name="username" value="${datasource.username}"></property>
+		<property name="password" value="${datasource.password}"></property>
+		<property name="driverClassName"
+			value="${datasource.driverClassName}"></property>
+	</bean>
+
+
+
+
+	<bean id="lsfb"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+
+
+		<!-- <property name="hibernateProperties" ref="properties"></property> -->
+		<property name="dataSource" ref="datasource"></property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+			</props>
+		</property>
+		<property name="packagesToScan"
+			value="com.xworkz.assetmanagement.entity"></property>
+	</bean>
+
+
+
+	
+
+</beans>
